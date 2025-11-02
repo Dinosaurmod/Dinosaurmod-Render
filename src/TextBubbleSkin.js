@@ -95,7 +95,7 @@ class TextBubbleSkin extends Skin {
 
     /**
      * Set parameters for this text bubble.
-     * @param {!string} type - either "say" or "think".
+     * @param {!string} type - either "say", "think" or "shout".
      * @param {!string} text - the text for the bubble.
      * @param {!boolean} pointsLeft - which side the bubble is pointing.
      */
@@ -195,6 +195,13 @@ class TextBubbleSkin extends Skin {
         // Draw the bubble's "tail"
         if (this._bubbleType === 'say') {
             // For a speech bubble, draw one swoopy thing
+            ctx.bezierCurveTo(0, 4, 4, 8, 4, 10);
+            ctx.arcTo(4, 12, 2, 12, 2);
+            ctx.bezierCurveTo(-1, 12, -11, 8, -16, 0);
+
+            ctx.closePath();
+        } else if (this._bubbleType === 'shout') {
+            // I have literally no idea where to begin.
             ctx.bezierCurveTo(0, 4, 4, 8, 4, 10);
             ctx.arcTo(4, 12, 2, 12, 2);
             ctx.bezierCurveTo(-1, 12, -11, 8, -16, 0);

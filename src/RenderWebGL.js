@@ -659,7 +659,7 @@ class RenderWebGL extends EventEmitter {
     /**
      * Create a new SVG skin using the text skin creator. The rotation center
      * is always placed at the top left.
-     * @param {!string} type - either "say" or "think".
+     * @param {!string} type - either "say", "think" or "shout".
      * @param {!string} text - the text for the bubble.
      * @param {!boolean} pointsLeft - which side the bubble is pointing.
      * @param {!object} props - text props.
@@ -730,7 +730,7 @@ class RenderWebGL extends EventEmitter {
     /**
      * Update a skin using the text skin creator.
      * @param {!int} skinId the ID for the skin to change.
-     * @param {!string} type - either "say" or "think".
+     * @param {!string} type - either "say", "think" or "shout".
      * @param {!string} text - the text for the bubble.
      * @param {!boolean} pointsLeft - which side the bubble is pointing.
      * @param {!object} props - the text props.
