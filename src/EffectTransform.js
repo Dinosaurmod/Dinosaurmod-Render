@@ -223,6 +223,11 @@ class EffectTransform {
             dst[0] = CENTER_X + (r * unitX * CENTER_X);
             dst[1] = CENTER_Y + (r * unitY * CENTER_Y);
         }
+        if ((effects & ShaderManager.EFFECT_INFO.blur.mask) !== 0) {
+            // test
+            dst[0] = CENTER_X / dst[0];
+            dst[1] = CENTER_Y / dst[1];
+        }
 
         return dst;
     }
