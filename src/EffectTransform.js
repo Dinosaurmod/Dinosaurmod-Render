@@ -225,8 +225,8 @@ class EffectTransform {
         }
         if ((effects & ShaderManager.EFFECT_INFO.blur.mask) !== 0) {
             // test
-            dst[0] = CENTER_X / dst[0];
-            dst[1] = CENTER_Y / dst[1];
+            dst[0] = CENTER_X + (dst[0] * dst[1] * CENTER_X);
+            dst[1] = CENTER_Y + (dst[1] * dst[0] * CENTER_Y);
         }
 
         return dst;
