@@ -180,30 +180,42 @@ class TextBubbleSkin extends Skin {
         }
 
         ctx.beginPath();
-        ctx.moveTo(this._props.CORNER_RADIUS, paddedHeight);
+        ctx.moveTo(this._props.CORNER_RADIUS, this._bubbleType === 'shout' ? 0 : paddedHeight);
         if (this._bubbleType === 'shout') {
-            const spikesPerSide = 10;
-            const spikeLength = -6;
+            const spikesPerSide = 8;
+            const spikeLength = 6;
+
             for (let i = 0; i <= spikesPerSide; i++) {
-                const x = (i / spikesPerSide) * paddedWidth;
+                const t = i / spikesPerSide;
+                const x = this._props.CORNER_RADIUS + t * (paddedWidth - 2 * this._props.CORNER_RADIUS);
                 const y = (i % 2 === 0 ? -spikeLength : 0);
                 ctx.lineTo(x, y);
             }
+            ctx.quadraticCurveTo(paddedWidth, 0, paddedWidth, this._props.CORNER_RADIUS);
+
             for (let i = 0; i <= spikesPerSide; i++) {
+                const t = i / spikesPerSide;
                 const x = paddedWidth + (i % 2 === 0 ? spikeLength : 0);
-                const y = (i / spikesPerSide) * paddedHeight;
+                const y = this._props.CORNER_RADIUS + t * (paddedHeight - 2 * this._props.CORNER_RADIUS);
                 ctx.lineTo(x, y);
             }
+            ctx.quadraticCurveTo(paddedWidth, paddedHeight, paddedWidth - this._props.CORNER_RADIUS, paddedHeight);
+
             for (let i = 0; i <= spikesPerSide; i++) {
-                const x = paddedWidth - (i / spikesPerSide) * paddedWidth;
+                const t = i / spikesPerSide;
+                const x = paddedWidth - this._props.CORNER_RADIUS - t * (paddedWidth - 2 * this._props.CORNER_RADIUS);
                 const y = paddedHeight + (i % 2 === 0 ? spikeLength : 0);
                 ctx.lineTo(x, y);
             }
+            ctx.quadraticCurveTo(0, paddedHeight, 0, paddedHeight - this._props.CORNER_RADIUS);
+
             for (let i = 0; i <= spikesPerSide; i++) {
-                const x = 0 - (i % 2 === 0 ? spikeLength : 0);
-                const y = paddedHeight - (i / spikesPerSide) * paddedHeight;
+                const t = i / spikesPerSide;
+                const x = (i % 2 === 0 ? -spikeLength : 0);
+                const y = paddedHeight - this._props.CORNER_RADIUS - t * (paddedHeight - 2 *t his._props.CORNER_RADIUS);
                 ctx.lineTo(x, y);
             }
+            ctx.quadraticCurveTo(0, 0, this._props.CORNER_RADIUS, 0);
         } else {
             // Draw the bubble's rounded borders
             ctx.arcTo(0, paddedHeight, 0, paddedHeight - this._props.CORNER_RADIUS, this._props.CORNER_RADIUS);
@@ -226,10 +238,11 @@ class TextBubbleSkin extends Skin {
 
             ctx.closePath();
         } else if (this._bubbleType === 'shout') {
-            // I have literally no idea where to begin.
-            ctx.bezierCurveTo(0, 4, 4, 8, 4, 10);
-            ctx.arcTo(4, 12, 2, 12, 2);
-            ctx.bezierCurveTo(-1, 12, -11, 8, -16, 0);
+            // idk
+            const tailWidth = 14;
+            ctx.moveTo(20, paddedHeight);
+            ctx.lineTo(20 + tailWidth /2, paddedHeight + this._props.TAIL_HEIGHT);
+            ctx.lineTo(20 + tailWidth, paddedHeight);
 
             ctx.closePath();
         } else {
