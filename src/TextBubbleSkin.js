@@ -183,7 +183,7 @@ class TextBubbleSkin extends Skin {
         ctx.moveTo(this._props.CORNER_RADIUS, paddedHeight);
         if (this._bubbleType === 'shout') {
             const spikesPerSide = 10;
-            const spikeLength = 6;
+            const spikeLength = -6;
             for (let i = 0; i <= spikesPerSide; i++) {
                 const x = (i / spikesPerSide) * paddedWidth;
                 const y = (i % 2 === 0 ? -spikeLength : 0);
@@ -204,7 +204,6 @@ class TextBubbleSkin extends Skin {
                 const y = paddedHeight - (i / spikesPerSide) * paddedHeight;
                 ctx.lineTo(x, y);
             }
-            ctx.closePath();
         } else {
             // Draw the bubble's rounded borders
             ctx.arcTo(0, paddedHeight, 0, paddedHeight - this._props.CORNER_RADIUS, this._props.CORNER_RADIUS);
