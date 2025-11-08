@@ -182,12 +182,12 @@ class TextBubbleSkin extends Skin {
         ctx.beginPath();
         ctx.moveTo(this._props.CORNER_RADIUS, this._bubbleType === 'shout' ? 0 : paddedHeight);
         if (this._bubbleType === 'shout') {
-            const spikesPerSide = 8;
+            const spikesPerSide = 6;
             const spikeLength = 6;
 
             for (let i = 0; i <= spikesPerSide; i++) {
                 const t = i / spikesPerSide;
-                const x = this._props.CORNER_RADIUS + t * (paddedWidth - 2 * this._props.CORNER_RADIUS);
+                const x = this._props.CORNER_RADIUS + t * (paddedWidth - 2*this._props.CORNER_RADIUS);
                 const y = (i % 2 === 0 ? -spikeLength : 0);
                 ctx.lineTo(x, y);
             }
@@ -196,14 +196,14 @@ class TextBubbleSkin extends Skin {
             for (let i = 0; i <= spikesPerSide; i++) {
                 const t = i / spikesPerSide;
                 const x = paddedWidth + (i % 2 === 0 ? spikeLength : 0);
-                const y = this._props.CORNER_RADIUS + t * (paddedHeight - 2 * this._props.CORNER_RADIUS);
+                const y = this._props.CORNER_RADIUS + t * (paddedHeight - 2*this._props.CORNER_RADIUS);
                 ctx.lineTo(x, y);
             }
             ctx.quadraticCurveTo(paddedWidth, paddedHeight, paddedWidth - this._props.CORNER_RADIUS, paddedHeight);
 
             for (let i = 0; i <= spikesPerSide; i++) {
                 const t = i / spikesPerSide;
-                const x = paddedWidth - this._props.CORNER_RADIUS - t * (paddedWidth - 2 * this._props.CORNER_RADIUS);
+                const x = paddedWidth - this._props.CORNER_RADIUS - t * (paddedWidth - 2*this._props.CORNER_RADIUS);
                 const y = paddedHeight + (i % 2 === 0 ? spikeLength : 0);
                 ctx.lineTo(x, y);
             }
@@ -212,7 +212,7 @@ class TextBubbleSkin extends Skin {
             for (let i = 0; i <= spikesPerSide; i++) {
                 const t = i / spikesPerSide;
                 const x = (i % 2 === 0 ? -spikeLength : 0);
-                const y = paddedHeight - this._props.CORNER_RADIUS - t * (paddedHeight - 2 * this._props.CORNER_RADIUS);
+                const y = paddedHeight - this._props.CORNER_RADIUS - t * (paddedHeight - 2*this._props.CORNER_RADIUS);
                 ctx.lineTo(x, y);
             }
             ctx.quadraticCurveTo(0, 0, this._props.CORNER_RADIUS, 0);
@@ -238,10 +238,9 @@ class TextBubbleSkin extends Skin {
 
             ctx.closePath();
         } else if (this._bubbleType === 'shout') {
-            // idk
             const tailWidth = 14;
             ctx.moveTo(20, paddedHeight);
-            ctx.lineTo(20 + tailWidth /2, paddedHeight + this._props.TAIL_HEIGHT);
+            ctx.lineTo(20 + tailWidth/2, paddedHeight + this._props.TAIL_HEIGHT);
             ctx.lineTo(20 + tailWidth, paddedHeight);
 
             ctx.closePath();
