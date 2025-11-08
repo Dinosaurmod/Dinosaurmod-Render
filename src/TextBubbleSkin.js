@@ -179,14 +179,40 @@ class TextBubbleSkin extends Skin {
             ctx.translate(-paddedWidth, 0);
         }
 
-        // Draw the bubble's rounded borders
         ctx.beginPath();
         ctx.moveTo(this._props.CORNER_RADIUS, paddedHeight);
-        ctx.arcTo(0, paddedHeight, 0, paddedHeight - this._props.CORNER_RADIUS, this._props.CORNER_RADIUS);
-        ctx.arcTo(0, 0, paddedWidth, 0, this._props.CORNER_RADIUS);
-        ctx.arcTo(paddedWidth, 0, paddedWidth, paddedHeight, this._props.CORNER_RADIUS);
-        ctx.arcTo(paddedWidth, paddedHeight, paddedWidth - this._props.CORNER_RADIUS, paddedHeight,
-            this._props.CORNER_RADIUS);
+        if (this._bubbleType === 'shout') {
+            const spikesPerSide = 10;
+            const spikeLength = 6;
+            for (let i = 0; i <= spikesPerSide; i++) {
+                const x = (i / spikesPerSide) * paddedWidth;
+                const y = (i % 2 === 0 ? -spikeLength : 0);
+                ctx.lineTo(x, y);
+            }
+            for (let i = 0; i <= spikesPerSide; i++) {
+                const x = paddedWidth + (i % 2 === 0 ? spikeLength : 0);
+                const y = (i / spikesPerSide) * paddedHeight;
+                ctx.lineTo(x, y);
+            }
+            for (let i = 0; i <= spikesPerSide; i++) {
+                const x = paddedWidth - (i / spikesPerSide) * paddedWidth;
+                const y = paddedHeight + (i % 2 === 0 ? spikeLength : 0);
+                ctx.lineTo(x, y);
+            }
+            for (let i = 0; i <= spikesPerSide; i++) {
+                const x = 0 - (i % 2 === 0 ? spikeLength : 0);
+                const y = paddedHeight - (i / spikesPerSide) * paddedHeight;
+                ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+        } else {
+            // Draw the bubble's rounded borders
+            ctx.arcTo(0, paddedHeight, 0, paddedHeight - this._props.CORNER_RADIUS, this._props.CORNER_RADIUS);
+            ctx.arcTo(0, 0, paddedWidth, 0, this._props.CORNER_RADIUS);
+            ctx.arcTo(paddedWidth, 0, paddedWidth, paddedHeight, this._props.CORNER_RADIUS);
+            ctx.arcTo(paddedWidth, paddedHeight, paddedWidth - this._props.CORNER_RADIUS, paddedHeight,
+                this._props.CORNER_RADIUS);
+        }
 
         // Translate the canvas so we don't have to do a bunch of width/height arithmetic
         ctx.save();
