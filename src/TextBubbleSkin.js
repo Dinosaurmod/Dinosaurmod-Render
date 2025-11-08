@@ -212,7 +212,7 @@ class TextBubbleSkin extends Skin {
             for (let i = 0; i <= spikesPerSide; i++) {
                 const t = i / spikesPerSide;
                 const x = (i % 2 === 0 ? -spikeLength : 0);
-                const y = paddedHeight - this._props.CORNER_RADIUS - t * (paddedHeight - 2 *t his._props.CORNER_RADIUS);
+                const y = paddedHeight - this._props.CORNER_RADIUS - t * (paddedHeight - 2 * this._props.CORNER_RADIUS);
                 ctx.lineTo(x, y);
             }
             ctx.quadraticCurveTo(0, 0, this._props.CORNER_RADIUS, 0);
