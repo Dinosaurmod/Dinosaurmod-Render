@@ -197,7 +197,7 @@ ShaderManager.EFFECT_INFO = {
     /** blur effect */
     blur: {
         uniformName: 'u_blur',
-        mask: 1 << 13,
+        mask: 1 << 15,
         converter: x => x,
         shapeChanges: true
     },
