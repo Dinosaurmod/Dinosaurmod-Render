@@ -182,13 +182,25 @@ ShaderManager.EFFECT_INFO = {
         converter: x => x - 1,
         shapeChanges: false
     },
+    horizontal_shear: {
+        uniformName: 'u_horizontalShear',
+        mask: 1 << 13,
+        converter: x => x / 10,
+        shapeChanges: true
+    },
+    vertical_shear: {
+        uniformName: 'u_verticalShear',
+        mask: 1 << 14,
+        converter: x => x / 10,
+        shapeChanges: true
+    },
     /** blur effect */
     blur: {
         uniformName: 'u_blur',
         mask: 1 << 13,
         converter: x => x,
         shapeChanges: true
-    }
+    },
 };
 
 /**
