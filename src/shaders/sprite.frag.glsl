@@ -195,7 +195,7 @@ void main()
 		texcoord0 = kCenter + r * unit * kCenter;
 	}
 	#endif // ENABLE_fisheye
-
+	
 	#ifdef ENABLE_repeat_x
 	{
 		if (u_repeatX != 1.0) texcoord0.x = fract(texcoord0.x * u_repeatX);
@@ -255,6 +255,15 @@ void main()
 	}
 	#endif // ENABLE_tintColor
 
+	#ifdef ENABLE_brightness
+	gl_FragColor.rgb = clamp(gl_FragColor.rgb + vec3(u_brightness), vec3(0), vec3(1));
+	#endif // ENABLE_brightness
+
+	// Re-multiply color values
+	gl_FragColor.rgb *= gl_FragColor.a + epsilon;
+
+	#endif // defined(ENABLE_color) || defined(ENABLE_brightness) || defined(ENABLE_saturation) || defined(ENABLE_tintColor)
+
 	#ifdef ENABLE_blur
 	{
 		float x,y,rr=u_blur*u_blur,d,w,w0;
@@ -267,15 +276,6 @@ void main()
 		gl_FragColor = col;
 	}
 	#endif // ENABLE_blur 
-
-	#ifdef ENABLE_brightness
-	gl_FragColor.rgb = clamp(gl_FragColor.rgb + vec3(u_brightness), vec3(0), vec3(1));
-	#endif // ENABLE_brightness
-
-	// Re-multiply color values
-	gl_FragColor.rgb *= gl_FragColor.a + epsilon;
-
-	#endif // defined(ENABLE_color) || defined(ENABLE_brightness) || defined(ENABLE_saturation) || defined(ENABLE_tintColor)
 
 	#ifdef ENABLE_ghost
 	gl_FragColor *= u_ghost;
