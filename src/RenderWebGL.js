@@ -473,19 +473,21 @@ class RenderWebGL extends EventEmitter {
      * @param {number} red The red component for the background.
      * @param {number} green The green component for the background.
      * @param {number} blue The blue component for the background.
-     * @param {number} alpha The Alpha component for the background. (0-1)
+     * @param {number} alpha The alpha component for the background.
      */
-    setBackgroundColor (red, green, blue, alpha) {
+    setBackgroundColor (red, green, blue, alpha = 1) {
         this.dirty = true;
 
-        this._backgroundColor4f[0] = red;
-        this._backgroundColor4f[1] = green;
-        this._backgroundColor4f[2] = blue;
-        this._backgroundColor4f[3] = alpha ?? 1;
+        // WebGL will want the color to be pre-multiplied.
 
-        this._backgroundColor3b[0] = red * 255;
-        this._backgroundColor3b[1] = green * 255;
-        this._backgroundColor3b[2] = blue * 255;
+        this._backgroundColor4f[0] = red * alpha;
+        this._backgroundColor4f[1] = green * alpha;
+        this._backgroundColor4f[2] = blue * alpha;
+        this._backgroundColor4f[3] = alpha;
+
+        this._backgroundColor3b[0] = red * alpha * 255;
+        this._backgroundColor3b[1] = green * alpha * 255;
+        this._backgroundColor3b[2] = blue * alpha * 255;
     }
 
     /**
@@ -824,6 +826,18 @@ class RenderWebGL extends EventEmitter {
             return;
         }
         skin.private = true;
+    }
+
+    /**
+     * Mark a drawable as being non-interactive by default.
+     * @param {number} drawableID The drawable's ID
+     */
+    markDrawableAsNoninteractive (drawableID) {
+        const drawable = this._allDrawables[drawableID];
+        if (!drawable) {
+            return;
+        }
+        drawable.interactive = false;
     }
 
     /**
@@ -1706,12 +1720,14 @@ class RenderWebGL extends EventEmitter {
 
         candidateIDs = (candidateIDs || this._drawList).filter(id => {
             const drawable = this._allDrawables[id];
+            if (!candidateIDs && !drawable.interactive) {
+                return false;
+            }
             // default pick list ignores visible and ghosted sprites.
             if (drawable.getVisible() && drawable.getUniforms().u_ghost !== 0) {
                 const drawableBounds = drawable.getFastBounds();
                 const inRange = bounds.intersects(drawableBounds);
                 if (!inRange) return false;
-                if (drawable.skin instanceof PenSkin) return false;
 
                 drawable.updateCPURenderAttributes();
                 return true;

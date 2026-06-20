@@ -50,6 +50,17 @@ uniform float u_saturation;
 #ifdef ENABLE_tintColor
 uniform highp float u_tintColor;
 #endif // ENABLE_tintColor
+#if defined(ENABLE_repeat_x)
+uniform float u_repeatX;
+#endif
+#if defined(ENABLE_repeat_y)
+uniform float u_repeatY;
+#endif
+#if defined(ENABLE_blur)
+in vec2 pos;
+uniform float u_blur;
+uniform float xs,ys; // i took the blur code from: https://stackoverflow.com/questions/64837705/opengl-blurring
+#endif
 
 #ifdef DRAW_MODE_line
 varying vec4 v_lineColor;
@@ -185,6 +196,18 @@ void main()
 	}
 	#endif // ENABLE_fisheye
 
+	#ifdef ENABLE_repeat_x
+	{
+		if (u_repeatX != 1.0) texcoord0.x = fract(texcoord0.x * u_repeatX);
+	}
+	#endif // ENABLE_repeat_x
+
+	#ifdef ENABLE_repeat_y
+	{
+		if (u_repeatY != 1.0) texcoord0.y = fract(texcoord0.y * u_repeatY);
+	}
+	#endif // ENABLE_repeat_y
+
 	gl_FragColor = texture2D(u_skin, texcoord0);
 
 	#if defined(ENABLE_color) || defined(ENABLE_brightness) || defined(ENABLE_saturation) || defined(ENABLE_tintColor)
@@ -231,6 +254,19 @@ void main()
 		gl_FragColor.rgb *= tintRgb;
 	}
 	#endif // ENABLE_tintColor
+
+	#ifdef ENABLE_blur
+	{
+		float x,y,rr=u_blur*u_blur,d,w,w0;
+		vec2 p=0.5*(vec2(1.0,1.0)+pos);
+		vec4 col=vec4(0.0,0.0,0.0,0.0);
+		w0=0.5135/pow(u_blur,0.96);
+		for (d=1.0/xs,x=-u_blur,p.x+=x*d;x<=u_blur;x++,p.x+=d)
+		for (d=1.0/ys,y=-u_blur,p.y+=y*d;y<=u_blur;y++,p.y+=d)
+		{ w=w0*exp(((-x*x)+(-y*y))/(2.0*rr)); col+=texture2D(u_skin,p)*w; }
+		gl_FragColor = col;
+	}
+	#endif // ENABLE_blur 
 
 	#ifdef ENABLE_brightness
 	gl_FragColor.rgb = clamp(gl_FragColor.rgb + vec3(u_brightness), vec3(0), vec3(1));
